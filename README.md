@@ -5,15 +5,15 @@
 2. [Project Structure](#project-structure)
 3. [Read Dataset](#read-dataset)
 5. [Data Preprocessing](#data-preprocessing)
-    1. [Splitting the Data](#Splitting-the-Data)
-    2. [Scaling the Features](#Scaling-the-Features)
+    1. [Splitting the Data](#1-splitting-the-data)
+    2. [Scaling the Features](#2-scaling-the-features)
 6. [Model Building](#model-building)
-    1. [Creating the Model](#Creating-the-Model)
-    2. [Compiling and Training the Model](#Compiling-and-Training-the-Model)
+    1. [Creating the Model](#1-creating-the-model)
+    2. [Compiling and Training the Model](#2-compiling-and-training-the-model)
 7. [Model Evaluation and Visualization](#model-evaluation-and-visualization)
-    1. [Evaluating the Model](#Evaluating-the-Model)
-    2. [Visualizing Training Loss](#Visualizing-Training-Loss)
-    3. [Plotting True vs. Predicted Values](#Plotting-True-vs.-Predicted-Values)
+    1. [Evaluating the Model](#1-evaluating-the-model)
+    2. [Visualizing Training Loss](#2-visualizing-training-loss)
+    3. [Plotting True vs. Predicted Values](#3-plotting-true-vs-predicted-values)
 9. [Conclusion](#conclusion)
 
 ## Introduction
@@ -24,7 +24,7 @@ This project aims to predict prices using a neural network model. The dataset us
 - `fake_reg.csv`: Dataset used for training and testing the model.
 
 ## Read Dataset
-1. **Loading Libraries**:
+### 1.**Loading Libraries**:
    ```python
    import pandas as pd 
    import numpy as np 
@@ -36,22 +36,23 @@ This project aims to predict prices using a neural network model. The dataset us
    from keras.callbacks import EarlyStopping
    import seaborn as sns
    ```
-2. **Reading the Data:**
+### 2. **Reading the Data:**
    ```python
 
     df = pd.read_csv('fake_reg.csv')
     df.head()
     df.info()
     df.describe()
- 
+   ```
 ## Data Preprocessing
-1. **Splitting the Data:**
+ ### 1. **Splitting the Data:**
 
    ```python
     x = df.iloc[:, 1:]
     y = df.iloc[:, 0]
     x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=42)
-2. **Scaling the Features:**
+```
+### 2. **Scaling the Features:**
 
     ```python
 
@@ -59,7 +60,7 @@ This project aims to predict prices using a neural network model. The dataset us
     x_train_scaled = scaler.fit_transform(x_train)
     x_test_scaled = scaler.transform(x_test)
 ## Model Building
- 1.**Creating the Model:**
+### 1. **Creating the Model:**
 
     ```python
     model = Sequential()
@@ -67,24 +68,29 @@ This project aims to predict prices using a neural network model. The dataset us
     model.add(Dense(10, activation='relu'))
     model.add(Dense(10, activation='relu'))
     model.add(Dense(1))
-2. **Compiling and Training the Model:**
+### 2. **Compiling and Training the Model:**
 
    ```python
     es = EarlyStopping(patience=20, monitor='loss')
     model.compile(optimizer='adam', loss='mse')
     model.fit(x_train_scaled, y_train, epochs=300, callbacks=[es])
+```
 ## Model Evaluation and Visualization
-1. **Evaluating the Model:**
+### 1. **Evaluating the Model:**
     ```python
     model.evaluate(x_test_scaled, y_test)
     model.evaluate(x_train_scaled, y_train)
-2. **Visualizing Training Loss:**
+### 2. **Visualizing Training Loss:**
 
    ```python
     loss_df = pd.DataFrame(model.history.history)
     loss_df.plot()
     plt.show()
- 3. **Plotting True vs. Predicted Values:**
+```
+
+![plot training loss price](https://github.com/user-attachments/assets/9243da84-daab-40e7-a235-fe563486a607)
+
+### 3. **Plotting True vs. Predicted Values:**
     ```python
       y_pred = model.predict(x_test_scaled)
       y_true = pd.DataFrame(y_test.values, columns=['True Value'])
@@ -98,5 +104,12 @@ This project aims to predict prices using a neural network model. The dataset us
       plt.show()
       sns.scatterplot(x=dff['True Value'], y=dff['Predicate_values'])
       plt.show()
+``
+![True vs pred price](https://github.com/user-attachments/assets/99ab2ed5-d490-41f5-a113-e620f90819d2)
+
+![plot training loss price](https://github.com/user-attachments/assets/87dadfe2-57be-4146-89ec-3f0442f4844b)
+
+    
+
 ## Conclusion
 This project successfully demonstrates how to build and evaluate a neural network model for price prediction. The notebook covers data loading, preprocessing, model building, and evaluation, providing a clear and concise workflow for similar predictive modeling tasks.
